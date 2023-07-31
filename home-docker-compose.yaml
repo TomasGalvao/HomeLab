@@ -1,0 +1,48 @@
+---
+version: "3.8"
+
+services:
+  adguardhome-sync:
+    image: ghcr.io/bakito/adguardhome-sync
+    container_name: adguardhome-sync
+    command: run --config /config/adguardhome-sync.yaml
+    networks:
+      - frontend
+
+    volumes:
+      - /opt/appdata/adguardhome-sync/adguardhome-sync.yaml:/config/adguardhome-sync.yaml
+
+    restart: unless-stopped
+
+  homarr:
+    container_name: homarr
+    image: ghcr.io/ajnart/homarr:latest
+    restart: unless-stopped
+    networks:
+      - backend
+      - frontend
+    volumes:
+      - /opt/appdata/homarr/configs:/app/data/configs
+      - /opt/appdata/homarr/icons:/app/public/icons
+
+
+  npm:
+    image: jc21/nginx-proxy-manager:latest
+    restart: unless-stopped
+    networks: 
+      - frontend
+      - backend
+    ports:
+      - 80:80
+      - 81:81
+      - 443:443
+    volumes:
+      - /opt/appdata/Nginx-Proxy-Manager/data:/data
+      - /opt/appdata/Nginx-Proxy-Manager/letsencrypt:/etc/letsencrypt
+
+networks:
+    frontend:
+      name: frontend
+    backend:
+      name: backend
+      internal: true

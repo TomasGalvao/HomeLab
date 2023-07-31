@@ -1,0 +1,131 @@
+---
+version: "3.8"
+
+services:
+
+  plex:
+    image: lscr.io/linuxserver/plex:latest
+    container_name: plex
+    networks:
+      - backend
+      - media
+    ports:
+      - 32400:32400/tcp
+      - 3005:3005/tcp
+      - 8324:8324/tcp
+      - 32469:32469/tcp
+      - 1900:1900/udp
+      - 32410:32410/udp
+      - 32412:32412/udp
+      - 32413:32413/udp
+      - 32414:32414/udp
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - VERSION=docker
+      - PLEX_CLAIM=claim-XXXXXXXXXXXXXXXXXX
+    volumes:
+      - Plex_Metadata:/config
+      - Plex_Media:/media
+
+    restart: unless-stopped
+
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    networks:
+      - backend
+      - media
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - /opt/appdata/sonarr:/config
+      - Media_Data:/data
+    restart: unless-stopped
+
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    networks:
+      - backend
+      - media
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - /opt/appdata/radarr:/config
+      - Media_Data:/data
+    restart: unless-stopped
+
+  sabnzbd:
+    image: lscr.io/linuxserver/sabnzbd:latest
+    container_name: sabnzbd
+    networks:
+      - backend
+      - media
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - /opt/appdata/sabnzbd:/config
+      - Downloads_NZB:/data/Downloads/Nzb/
+
+    restart: unless-stopped
+
+  bazarr:
+    image: lscr.io/linuxserver/bazarr:latest
+    container_name: bazarr
+    networks:
+      - backend
+      - media
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - /opt/appdata/bazarr:/config
+      - Media_Data:/data
+    restart: unless-stopped
+
+
+volumes:
+
+  Downloads_NZB:
+    name: Downloads_NZB
+    driver_opts:
+      type: nfs
+      o: 	addr=xxx.xxx.xxx.xxx,rw,nfsvers=4
+      device: :/mnt/user/data/Downloads/Nzb
+    
+  Media_Data:
+    name: Media_Data
+    driver_opts:
+      type: nfs
+      o: 	addr=xxx.xxx.xxx.xxx,rw,nfsvers=4
+      device: :/mnt/user/data
+    
+  Plex_Metadata:
+    name: Plex_Metadata
+    driver_opts:
+      type: nfs
+      o: 	addr=xxx.xxx.xxx.xxx,rw,nfsvers=4
+      device: :/mnt/user/plex_metadata
+    
+  Plex_Media:
+    name: Plex_Media
+    driver_opts:
+      type: nfs
+      o: 	addr=xxx.xxx.xxx.xxx,rw,nfsvers=4
+      device: :/mnt/user/data/Media
+
+networks:
+    media:
+      name: media
+    backend:
+      external: true
+      name: backend
