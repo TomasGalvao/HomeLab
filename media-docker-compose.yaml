@@ -24,6 +24,7 @@ services:
       - PGID=1000
       - TZ=Etc/UTC
       - VERSION=docker
+      - PLEX_CLAIM= claim-zMXoyzEdCg7VTNJi1LfP
     volumes:
       - Plex_Metadata:/config
       - Plex_Media:/media
