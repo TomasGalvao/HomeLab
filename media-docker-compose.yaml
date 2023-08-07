@@ -24,7 +24,6 @@ services:
       - PGID=1000
       - TZ=Etc/UTC
       - VERSION=docker
-      - PLEX_CLAIM=claim-XXXXXXXXXXXXXXXXXX
     volumes:
       - Plex_Metadata:/config
       - Plex_Media:/media
@@ -91,7 +90,17 @@ services:
       - /opt/appdata/bazarr:/config
       - Media_Data:/data
     restart: unless-stopped
-
+    
+  notifiarr:
+    container_name: notifiarr
+    hostname: notifiarr
+    image: golift/notifiarr
+    restart: unless-stopped
+    networks:
+     - backend
+    volumes:
+      - /opt/appdata/notifiarr:/config
+      - /var/run/utmp:/var/run/utmp
 
 volumes:
 
@@ -99,28 +108,28 @@ volumes:
     name: Downloads_NZB
     driver_opts:
       type: nfs
-      o: 	addr=xxx.xxx.xxx.xxx,rw,nfsvers=4
+      o: 	addr=192.168.0.6,rw,nfsvers=4
       device: :/mnt/user/data/Downloads/Nzb
     
   Media_Data:
     name: Media_Data
     driver_opts:
       type: nfs
-      o: 	addr=xxx.xxx.xxx.xxx,rw,nfsvers=4
+      o: 	addr=192.168.0.6,rw,nfsvers=4
       device: :/mnt/user/data
     
   Plex_Metadata:
     name: Plex_Metadata
     driver_opts:
       type: nfs
-      o: 	addr=xxx.xxx.xxx.xxx,rw,nfsvers=4
+      o: 	addr=192.168.0.6,rw,nfsvers=4
       device: :/mnt/user/plex_metadata
     
   Plex_Media:
     name: Plex_Media
     driver_opts:
       type: nfs
-      o: 	addr=xxx.xxx.xxx.xxx,rw,nfsvers=4
+      o: 	addr=192.168.0.6,rw,nfsvers=4
       device: :/mnt/user/data/Media
 
 networks:
