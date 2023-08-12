@@ -115,7 +115,10 @@ services:
     hostname: notifiarr
     image: golift/notifiarr
     restart: unless-stopped
+    ports:
+      - 5454:5454
     networks:
+     - media
      - backend
     volumes:
       - /opt/appdata/notifiarr:/config
