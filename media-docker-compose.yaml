@@ -112,6 +112,9 @@ services:
 
   prowlarr:
     image: lscr.io/linuxserver/prowlarr:latest
+    networks:
+      - backend
+      - media
     container_name: prowlarr
     environment:
       - PUID=1000
