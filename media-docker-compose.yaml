@@ -109,6 +109,19 @@ services:
       - /opt/appdata/bazarr:/config
       - Media_Data:/data
     restart: unless-stopped
+
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - /opt/appdata/prowlarr:/config
+    ports:
+      - 9696:9696
+    restart: unless-stopped
     
   notifiarr:
     container_name: notifiarr
@@ -123,6 +136,9 @@ services:
     volumes:
       - /opt/appdata/notifiarr:/config
       - /var/run/utmp:/var/run/utmp
+
+
+  
 
 volumes:
 
