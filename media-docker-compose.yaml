@@ -122,8 +122,6 @@ services:
       - TZ=Etc/UTC
     volumes:
       - /opt/appdata/prowlarr:/config
-    ports:
-      - 9696:9696
     restart: unless-stopped
     
   notifiarr:
