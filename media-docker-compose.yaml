@@ -95,6 +95,26 @@ services:
 
     restart: unless-stopped
 
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    networks:
+      - backend
+      - media
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - WEBUI_PORT=8080
+    volumes:
+      - /opt/appdata/qbittorrent:/config
+      - Downloads_Torrent:/data/Downloads/Torrent/
+    ports:
+      - 8080:8080
+      - 6881:6881
+      - 6881:6881/udp
+    restart: unless-stopped
+
   bazarr:
     image: lscr.io/linuxserver/bazarr:latest
     container_name: bazarr
@@ -149,7 +169,14 @@ volumes:
       type: nfs
       o: 	addr=192.168.0.6,rw,nfsvers=4
       device: :/mnt/user/data/Downloads/Nzb
-    
+
+  Downloads_Torrent:
+    name: Downloads_Torrent
+    driver_opts:
+      type: nfs
+      o: 	addr=192.168.0.6,rw,nfsvers=4
+      device: :/mnt/user/data/Downloads/Torrent
+      
   Media_Data:
     name: Media_Data
     driver_opts:
