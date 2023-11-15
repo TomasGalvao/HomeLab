@@ -24,6 +24,7 @@ services:
     volumes:
       - /opt/appdata/homarr/configs:/app/data/configs
       - /opt/appdata/homarr/icons:/app/public/icons
+      - /opt/appdata/homarr/data:/data
 
 
   npm:
