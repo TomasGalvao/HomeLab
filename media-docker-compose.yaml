@@ -111,8 +111,7 @@ services:
       - Downloads_Torrent:/data/Downloads/Torrent/
     ports:
       - 8080:8080
-      - 6881:6881
-      - 6881:6881/udp
+      - 60093:60093
     restart: unless-stopped
 
   bazarr:
