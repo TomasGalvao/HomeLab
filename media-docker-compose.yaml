@@ -158,7 +158,17 @@ services:
       - /opt/appdata/notifiarr:/config
       - /var/run/utmp:/var/run/utmp
 
-
+  flaresolverr:
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    container_name: flaresolverr
+    networks:
+      - media
+    environment:
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      - LOG_HTML=${LOG_HTML:-false}
+      - CAPTCHA_SOLVER=${CAPTCHA_SOLVER:-none}
+      - TZ=Europe/London
+    restart: unless-stopped 
   
 
 volumes:
