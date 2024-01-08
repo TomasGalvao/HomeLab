@@ -9,23 +9,20 @@ services:
     command: run --config /config/adguardhome-sync.yaml
     networks:
       - frontend
-
     volumes:
       - /opt/appdata/adguardhome-sync/adguardhome-sync.yaml:/config/adguardhome-sync.yaml
-
     restart: unless-stopped
 
-  homarr:
-    container_name: homarr
-    image: ghcr.io/ajnart/homarr:latest
-    restart: unless-stopped
+  homepage:
+    image: ghcr.io/gethomepage/homepage:latest
+    container_name: homepage
     networks:
       - backend
       - frontend
     volumes:
-      - /opt/appdata/homarr/configs:/app/data/configs
-      - /opt/appdata/homarr/icons:/app/public/icons
-      - /opt/appdata/homarr/data:/data
+      - /opt/appdata/homepage/config:/app/config
+      - /opt/appdata/homepage/icons:/app/public/icons
+      - /var/run/docker.sock:/var/run/docker.sock
 
 
   npm:
@@ -51,12 +48,13 @@ services:
       - PGID=1000
       - TZ=Etc/UTC
     volumes:
-      - /opt/appdata/Syncthing/config:/config
+      - /opt/appdata/syncthing/config:/config
       - Syncthing:/data
     networks: 
       - frontend
       - backend
     ports:
+      - 8384:8384
       - 22000:22000/tcp
       - 22000:22000/udp
       - 21027:21027/udp
