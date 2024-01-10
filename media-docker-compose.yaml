@@ -11,6 +11,7 @@ services:
       - PGID=1000
       - TZ=Etc/UTC
       - JELLYFIN_PublishedServerUrl=jellyfin.casa.tomasgalvao.me #optional
+      - DOCKER_MODS=linuxserver/mods:jellyfin-opencl-intel
     volumes:
       - Metadata:/config
       - Media:/media
