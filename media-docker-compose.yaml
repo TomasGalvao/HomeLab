@@ -2,7 +2,6 @@
 version: "3.8"
 
 services:
-
   jellyfin:
     image: lscr.io/linuxserver/jellyfin:latest
     container_name: jellyfin
@@ -39,7 +38,7 @@ services:
       - Media_Data:/data
     restart: unless-stopped
 
-   sonarrAni:
+  sonarrAni:
     image: lscr.io/linuxserver/sonarr:develop
     container_name: sonarrAni
     networks:
