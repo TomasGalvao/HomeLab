@@ -24,34 +24,6 @@ services:
       - /dev/dri:/dev/dri
     restart: unless-stopped
 
-#  plex:
-#    image: lscr.io/linuxserver/plex:latest
-#    container_name: plex
-#    networks:
-#      - backend
-#      - media
-#    ports:
-#      - 32400:32400/tcp
-#      - 3005:3005/tcp
-#      - 8324:8324/tcp
-#      - 32469:32469/tcp
-#      - 1900:1900/udp
-#      - 32410:32410/udp
-#      - 32412:32412/udp
-#      - 32413:32413/udp
-#      - 32414:32414/udp
-#    environment:
-#      - PUID=1000
-#      - PGID=1000
-#      - TZ=Etc/UTC
-#      - VERSION=docker
-#      - PLEX_CLAIM=claim-yP9zBnziE3zfeYuZV3ca
-#    volumes:
-#      - Plex_Metadata:/config
-#      - Plex_Media:/media
-#
-#    restart: unless-stopped
-
   sonarr:
     image: lscr.io/linuxserver/sonarr:develop
     container_name: sonarr
@@ -64,6 +36,21 @@ services:
       - TZ=Etc/UTC
     volumes:
       - /opt/appdata/sonarr:/config
+      - Media_Data:/data
+    restart: unless-stopped
+
+   sonarrAni:
+    image: lscr.io/linuxserver/sonarr:develop
+    container_name: sonarrAni
+    networks:
+      - backend
+      - media
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - /opt/appdata/sonarrAni:/config
       - Media_Data:/data
     restart: unless-stopped
 
@@ -172,6 +159,35 @@ services:
       - CAPTCHA_SOLVER=${CAPTCHA_SOLVER:-none}
       - TZ=Europe/London
     restart: unless-stopped 
+
+  
+#  plex:
+#    image: lscr.io/linuxserver/plex:latest
+#    container_name: plex
+#    networks:
+#      - backend
+#      - media
+#    ports:
+#      - 32400:32400/tcp
+#      - 3005:3005/tcp
+#      - 8324:8324/tcp
+#      - 32469:32469/tcp
+#      - 1900:1900/udp
+#      - 32410:32410/udp
+#      - 32412:32412/udp
+#      - 32413:32413/udp
+#      - 32414:32414/udp
+#    environment:
+#      - PUID=1000
+#      - PGID=1000
+#      - TZ=Etc/UTC
+#      - VERSION=docker
+#      - PLEX_CLAIM=claim-yP9zBnziE3zfeYuZV3ca
+#    volumes:
+#      - Plex_Metadata:/config
+#      - Plex_Media:/media
+#
+#    restart: unless-stopped
   
 
 volumes:
