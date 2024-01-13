@@ -159,6 +159,14 @@ services:
       - TZ=Europe/London
     restart: unless-stopped 
 
+  wizarr:
+    container_name: wizarr
+    image: ghcr.io/wizarrrr/wizarr:latest
+    networks:
+      - backend
+    volumes:
+      - /opt/appdata/wizarr/database:/data/database
+
   
 #  plex:
 #    image: lscr.io/linuxserver/plex:latest
