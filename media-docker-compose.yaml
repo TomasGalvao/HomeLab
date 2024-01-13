@@ -177,8 +177,6 @@ services:
     environment:
       - LOG_LEVEL=debug
       - TZ=Europe/London
-    ports:
-      - 5055:5055
     volumes:
       - /opt/appdata/jellyseerr/config:/app/config
     restart: unless-stopped
