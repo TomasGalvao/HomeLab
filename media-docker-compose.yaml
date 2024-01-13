@@ -167,6 +167,21 @@ services:
       - backend
     volumes:
       - /opt/appdata/wizarr/database:/data/database
+  
+  jellyseerr:
+    image: fallenbagel/jellyseerr:latest
+    container_name: jellyseerr
+    networks:
+      - media
+      - backend
+    environment:
+      - LOG_LEVEL=debug
+      - TZ=Europe/London
+    ports:
+      - 5055:5055
+    volumes:
+      - /opt/appdata/jellyseerr/config:/app/config
+    restart: unless-stopped
 
   
 #  plex:
