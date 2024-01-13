@@ -163,6 +163,7 @@ services:
     container_name: wizarr
     image: ghcr.io/wizarrrr/wizarr:latest
     networks:
+      - media
       - backend
     volumes:
       - /opt/appdata/wizarr/database:/data/database
