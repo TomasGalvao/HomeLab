@@ -181,6 +181,19 @@ services:
       - /opt/appdata/jellyseerr/config:/app/config
     restart: unless-stopped
 
+  autobrr:
+    container_name: autobrr
+    image: ghcr.io/autobrr/autobrr:latest
+    restart: unless-stopped
+    user: 1000:1000
+    networks:
+      - media
+      - backend
+    environment:
+      - TZ=Europe/London
+    volumes:
+      - /opt/appdata/autobrr/config:/config
+
   
 #  plex:
 #    image: lscr.io/linuxserver/plex:latest
