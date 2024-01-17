@@ -101,7 +101,7 @@ services:
       - Downloads_Torrent:/data/Downloads/Torrent/
     ports:
       - 8081:8081
-      - 60093:60093
+      - 40202:40202
     restart: unless-stopped
 
   bazarr:
