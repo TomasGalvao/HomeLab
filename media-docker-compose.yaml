@@ -177,16 +177,16 @@ services:
     volumes:
       - /opt/appdata/autobrr/config:/config
 
-  cross-seed:
-    image: ghcr.io/cross-seed/cross-seed
-    container_name: cross-seed
-    networks:
-      - media
-    volumes:
-      - /opt/appdata/cross-seed:/config
-      - /opt/appdata/qbittorrent/qBittorrent/BT_backup:/torrents:ro # your torrent clients .torrent cache, can and should be mounted read-only (e.g. qbit: `BT_Backup` | deluge: `state` | transmission: `transmission/torrents` | rtorrent: session dir from `.rtorrent.rc`)
-      - Torrent_Watch:/cross-seeds
-    command: search # this enables the search mode, change to daemon to specifically run the daemon
+ # cross-seed:
+ #   image: ghcr.io/cross-seed/cross-seed
+ #   container_name: cross-seed
+ #   networks:
+ #     - media
+ #   volumes:
+ #     - /opt/appdata/cross-seed:/config
+ #     - /opt/appdata/qbittorrent/qBittorrent/BT_backup:/torrents:ro # your torrent clients .torrent cache, can and should be mounted read-only (e.g. qbit: `BT_Backup` | deluge: `state` | transmission: `transmission/torrents` | rtorrent: session dir from `.rtorrent.rc`)
+ #     - Torrent_Watch:/cross-seeds
+ #   command: search # this enables the search mode, change to daemon to specifically run the daemon
 
 volumes:
 
