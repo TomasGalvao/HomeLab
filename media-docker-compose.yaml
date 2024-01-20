@@ -68,22 +68,6 @@ services:
       - Media_Data:/data
     restart: unless-stopped
 
-  sabnzbd:
-    image: lscr.io/linuxserver/sabnzbd:latest
-    container_name: sabnzbd
-    networks:
-      - backend
-      - media
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Etc/UTC
-    volumes:
-      - /opt/appdata/sabnzbd:/config
-      - Downloads_NZB:/data/Downloads/Nzb/
-
-    restart: unless-stopped
-
   qbittorrent:
     image: lscr.io/linuxserver/qbittorrent:latest
     container_name: qbittorrent
@@ -206,12 +190,12 @@ services:
 
 volumes:
 
-  Downloads_NZB:
-    name: Downloads_NZB
+  Downloads_rTorrent:
+    name: Downloads_rTorrent
     driver_opts:
       type: nfs
       o: 	addr=192.168.0.6,rw,nfsvers=4
-      device: :/mnt/user/data/Downloads/Nzb
+      device: :/mnt/user/data/Downloads/rTorrent
 
   Downloads_Torrent:
     name: Downloads_Torrent
