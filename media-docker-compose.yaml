@@ -193,35 +193,16 @@ services:
     volumes:
       - /opt/appdata/autobrr/config:/config
 
-  
-#  plex:
-#    image: lscr.io/linuxserver/plex:latest
-#    container_name: plex
-#    networks:
-#      - backend
-#      - media
-#    ports:
-#      - 32400:32400/tcp
-#      - 3005:3005/tcp
-#      - 8324:8324/tcp
-#      - 32469:32469/tcp
-#      - 1900:1900/udp
-#      - 32410:32410/udp
-#      - 32412:32412/udp
-#      - 32413:32413/udp
-#      - 32414:32414/udp
-#    environment:
-#      - PUID=1000
-#      - PGID=1000
-#      - TZ=Etc/UTC
-#      - VERSION=docker
-#      - PLEX_CLAIM=claim-yP9zBnziE3zfeYuZV3ca
-#    volumes:
-#      - Plex_Metadata:/config
-#      - Plex_Media:/media
-#
-#    restart: unless-stopped
-  
+  cross-seed:
+    image: ghcr.io/cross-seed/cross-seed
+    container_name: cross-seed
+    networks:
+      - media
+    volumes:
+      - /opt/appdata/cross-seed:/config
+      - /opt/appdata/qbittorrent/qBittorrent/BT_backup:/torrents:ro # your torrent clients .torrent cache, can and should be mounted read-only (e.g. qbit: `BT_Backup` | deluge: `state` | transmission: `transmission/torrents` | rtorrent: session dir from `.rtorrent.rc`)
+      - Torrent_Watch:/cross-seeds
+    command: search # this enables the search mode, change to daemon to specifically run the daemon
 
 volumes:
 
@@ -238,6 +219,13 @@ volumes:
       type: nfs
       o: 	addr=192.168.0.6,rw,nfsvers=4
       device: :/mnt/user/data/Downloads/Torrent
+
+  Torrent_Watch:
+    name: Torrent_Watch
+    driver_opts:
+      type: nfs
+      o: 	addr=192.168.0.6,rw,nfsvers=4
+      device: :/mnt/user/data/Downloads/Torrent/WATCH
       
   Media_Data:
     name: Media_Data
