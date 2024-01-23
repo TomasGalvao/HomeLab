@@ -79,7 +79,6 @@ services:
       - PGID=1000
       - TZ=Etc/UTC
       - WEBUI_PORT=8081
-      - DOCKER_MODS=marzzzello/linuxserver-io-mod-qbit-matui|arafatamim/linuxserver-io-mod-vuetorrent
     volumes:
       - /opt/appdata/qbittorrent:/config
       - Downloads_Torrent:/data/Downloads/Torrent/
