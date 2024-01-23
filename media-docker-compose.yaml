@@ -188,6 +188,20 @@ services:
  #     - Torrent_Watch:/cross-seeds
  #   command: search # this enables the search mode, change to daemon to specifically run the daemon
 
+  services:
+  komga:
+    image: gotson/komga
+    container_name: komga
+    volumes:
+      - /opt/appdata/komga:/config
+      - Media:/data
+    networks:
+      - backend
+      - media
+    environment:
+      - TZ=Europe/London
+    restart: unless-stopped
+
 volumes:
 
   Downloads_rTorrent:
