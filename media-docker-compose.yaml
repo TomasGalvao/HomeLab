@@ -150,6 +150,7 @@ services:
       - backend
     volumes:
       - /opt/appdata/wizarr/database:/data/database
+    restart: unless-stopped
   
   jellyseerr:
     image: fallenbagel/jellyseerr:latest
