@@ -1,10 +1,25 @@
----
-version: "3.8"
-
 services:
+#  plex:
+#    image: lscr.io/linuxserver/plex:latest
+#    container_name: plex
+#    network_mode: host
+#    environment:
+#      - PUID=1000
+#      - PGID=1000
+#      - TZ=Etc/UTC
+#      - VERSION=docker
+#    volumes:
+#      - Plex_Metadata:/config
+#      - Media:/media
+#    restart: unless-stopped
+
+
   jellyfin:
     image: lscr.io/linuxserver/jellyfin:latest
     container_name: jellyfin
+    networks:
+      - backend
+      - media
     environment:
       - PUID=1000
       - PGID=1000
@@ -201,48 +216,100 @@ services:
       - TZ=Europe/London
     restart: unless-stopped
 
+  unpackerr:
+    image: golift/unpackerr
+    container_name: unpackerr
+    networks:
+      - backend
+      - media
+    volumes:
+      - Media_Data:/data
+      - /opt/appdata/unpackerr:/config
+    restart: unless-stopped
+    user: 1000:1000
+    environment:
+      - TZ=Europe/London
+      # General config
+      - UN_DEBUG=false
+      - UN_LOG_FILE=
+      - UN_LOG_FILES=10
+      - UN_LOG_FILE_MB=10
+      - UN_INTERVAL=2m
+      - UN_START_DELAY=1m
+      - UN_RETRY_DELAY=5m
+      - UN_MAX_RETRIES=3
+      - UN_PARALLEL=1
+      - UN_FILE_MODE=0644
+      - UN_DIR_MODE=0755
+      # Sonarr Config
+      - UN_SONARR_0_URL=http://sonarr:8989
+      - UN_SONARR_0_API_KEY=21891cc95d304535bbc4541e669efb55
+      - UN_SONARR_0_PATHS_0=/data/Downloads/Torrent/tv-sonarr
+      - UN_SONARR_0_PROTOCOLS=torrent
+      - UN_SONARR_0_TIMEOUT=10s
+      - UN_SONARR_0_DELETE_ORIG=false
+      - UN_SONARR_0_DELETE_DELAY=5m
+      # Radarr Config
+      - UN_RADARR_0_URL=http://radarr:7878
+      - UN_RADARR_0_API_KEY=d32f79b5765146c3a63e535382799a95
+      - UN_RADARR_0_PATHS_0=/data/Downloads/Torrent/radarr
+      - UN_RADARR_0_PROTOCOLS=torrent
+      - UN_RADARR_0_TIMEOUT=10s
+      - UN_RADARR_0_DELETE_ORIG=false
+      - UN_RADARR_0_DELETE_DELAY=5m
+
+
+
+
 volumes:
 
   Downloads_rTorrent:
     name: Downloads_rTorrent
     driver_opts:
       type: nfs
-      o: 	addr=192.168.0.6,rw,nfsvers=4
+      o:        addr=192.168.0.6,rw,nfsvers=4
       device: :/mnt/user/data/Downloads/rTorrent
 
   Downloads_Torrent:
     name: Downloads_Torrent
     driver_opts:
       type: nfs
-      o: 	addr=192.168.0.6,rw,nfsvers=4
+      o:        addr=192.168.0.6,rw,nfsvers=4
       device: :/mnt/user/data/Downloads/Torrent
 
   Torrent_Watch:
     name: Torrent_Watch
     driver_opts:
       type: nfs
-      o: 	addr=192.168.0.6,rw,nfsvers=4
+      o:        addr=192.168.0.6,rw,nfsvers=4
       device: :/mnt/user/data/Downloads/Torrent/WATCH
       
   Media_Data:
     name: Media_Data
     driver_opts:
       type: nfs
-      o: 	addr=192.168.0.6,rw,nfsvers=4
+      o:        addr=192.168.0.6,rw,nfsvers=4
       device: :/mnt/user/data
     
   Metadata:
+    name: Jellyfin_Metadata
+    driver_opts:
+      type: nfs
+      o:        addr=192.168.0.6,rw,nfsvers=4
+      device: :/mnt/user/media_metadata
+
+  Plex_Metadata:
     name: Plex_Metadata
     driver_opts:
       type: nfs
-      o: 	addr=192.168.0.6,rw,nfsvers=4
-      device: :/mnt/user/media_metadata
+      o:        addr=192.168.0.6,rw,nfsvers=4
+      device: :/mnt/user/plex_metadata
     
   Media:
     name: Media
     driver_opts:
       type: nfs
-      o: 	addr=192.168.0.6,rw,nfsvers=4
+      o:        addr=192.168.0.6,rw,nfsvers=4
       device: :/mnt/user/data/Media
 
 networks:
