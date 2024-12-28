@@ -1,19 +1,4 @@
 services:
-#  plex:
-#    image: lscr.io/linuxserver/plex:latest
-#    container_name: plex
-#    network_mode: host
-#    environment:
-#      - PUID=1000
-#      - PGID=1000
-#      - TZ=Etc/UTC
-#      - VERSION=docker
-#    volumes:
-#      - Plex_Metadata:/config
-#      - Media:/media
-#    restart: unless-stopped
-
-
   jellyfin:
     image: lscr.io/linuxserver/jellyfin:latest
     container_name: jellyfin
@@ -145,18 +130,6 @@ services:
       - /opt/appdata/notifiarr:/config
       - /var/run/utmp:/var/run/utmp
 
-  flaresolverr:
-    image: ghcr.io/flaresolverr/flaresolverr:latest
-    container_name: flaresolverr
-    networks:
-      - media
-    environment:
-      - LOG_LEVEL=${LOG_LEVEL:-info}
-      - LOG_HTML=${LOG_HTML:-false}
-      - CAPTCHA_SOLVER=${CAPTCHA_SOLVER:-none}
-      - TZ=Europe/London
-    restart: unless-stopped 
-
   wizarr:
     container_name: wizarr
     image: ghcr.io/wizarrrr/wizarr:latest
@@ -191,30 +164,6 @@ services:
       - TZ=Europe/London
     volumes:
       - /opt/appdata/autobrr/config:/config
-
- # cross-seed:
- #   image: ghcr.io/cross-seed/cross-seed
- #   container_name: cross-seed
- #   networks:
- #     - media
- #   volumes:
- #     - /opt/appdata/cross-seed:/config
- #     - /opt/appdata/qbittorrent/qBittorrent/BT_backup:/torrents:ro # your torrent clients .torrent cache, can and should be mounted read-only (e.g. qbit: `BT_Backup` | deluge: `state` | transmission: `transmission/torrents` | rtorrent: session dir from `.rtorrent.rc`)
- #     - Torrent_Watch:/cross-seeds
- #   command: search # this enables the search mode, change to daemon to specifically run the daemon
-
-  komga:
-    image: gotson/komga
-    container_name: komga
-    volumes:
-      - /opt/appdata/komga:/config
-      - Media:/data
-    networks:
-      - backend
-      - media
-    environment:
-      - TZ=Europe/London
-    restart: unless-stopped
 
   unpackerr:
     image: golift/unpackerr
@@ -262,14 +211,6 @@ services:
 
 
 volumes:
-
-  Downloads_rTorrent:
-    name: Downloads_rTorrent
-    driver_opts:
-      type: nfs
-      o:        addr=192.168.0.6,rw,nfsvers=4
-      device: :/mnt/user/data/Downloads/rTorrent
-
   Downloads_Torrent:
     name: Downloads_Torrent
     driver_opts:
@@ -284,29 +225,15 @@ volumes:
       o:        addr=192.168.0.6,rw,nfsvers=4
       device: :/mnt/user/data/Downloads/Torrent/WATCH
       
-  Media_Data:
-    name: Media_Data
+  Media:
+    name: Media
     driver_opts:
       type: nfs
       o:        addr=192.168.0.6,rw,nfsvers=4
       device: :/mnt/user/data
     
-  Metadata:
-    name: Jellyfin_Metadata
-    driver_opts:
-      type: nfs
-      o:        addr=192.168.0.6,rw,nfsvers=4
-      device: :/mnt/user/media_metadata
-
-  Plex_Metadata:
-    name: Plex_Metadata
-    driver_opts:
-      type: nfs
-      o:        addr=192.168.0.6,rw,nfsvers=4
-      device: :/mnt/user/plex_metadata
-    
-  Media:
-    name: Media
+  Library:
+    name: Library
     driver_opts:
       type: nfs
       o:        addr=192.168.0.6,rw,nfsvers=4
