@@ -210,26 +210,14 @@ services:
 
 
 volumes:
-  Downloads_Torrent:
-    name: Downloads_Torrent
-    driver_opts:
-      type: nfs
-      o:        addr=192.168.0.6,rw,nfsvers=4
-      device: :/mnt/sigma/Media/Downloads/Torrent
-      
-  Media:
+
+ Media:
     name: Media
     driver_opts:
       type: nfs
       o:        addr=192.168.0.6,rw,nfsvers=4
       device: :/mnt/sigma/Media
-    
-  Library:
-    name: Library
-    driver_opts:
-      type: nfs
-      o:        addr=192.168.0.6,rw,nfsvers=4
-      device: :/mnt/sigma/Media/Library
+
 
 networks:
     media:
