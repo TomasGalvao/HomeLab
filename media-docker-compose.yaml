@@ -2,6 +2,7 @@ services:
   jellyfin:
     image: lscr.io/linuxserver/jellyfin:latest
     container_name: jellyfin
+    runtime: nvidia
     networks:
       - backend
       - media
@@ -10,17 +11,15 @@ services:
       - PGID=1000
       - TZ=Etc/UTC
       - JELLYFIN_PublishedServerUrl=jellyfin.casa.tomasgalvao.me #optional
-      - DOCKER_MODS=linuxserver/mods:jellyfin-opencl-intel
+      - NVIDIA_VISIBLE_DEVICES=all
     volumes:
-      - Metadata:/config
+      - /opt/appdata/jellyfin:/config
       - Media:/media
     ports:
       - 8096:8096
       - 8920:8920 #optional
       - 7359:7359/udp #optional
       - 1900:1900/udp #optional
-    devices:
-      - /dev/dri:/dev/dri
     restart: unless-stopped
 
   sonarr:
@@ -35,7 +34,7 @@ services:
       - TZ=Etc/UTC
     volumes:
       - /opt/appdata/sonarr:/config
-      - Media_Data:/data
+      - Media:/media
     restart: unless-stopped
 
   sonarrAni:
@@ -50,7 +49,7 @@ services:
       - TZ=Etc/UTC
     volumes:
       - /opt/appdata/sonarrAni:/config
-      - Media_Data:/data
+      - Media:/media
     restart: unless-stopped
 
   radarr:
@@ -65,7 +64,7 @@ services:
       - TZ=Etc/UTC
     volumes:
       - /opt/appdata/radarr:/config
-      - Media_Data:/data
+      - Media:/media
     restart: unless-stopped
 
   qbittorrent:
@@ -81,7 +80,7 @@ services:
       - WEBUI_PORT=8081
     volumes:
       - /opt/appdata/qbittorrent:/config
-      - Downloads_Torrent:/data/Downloads/Torrent/
+      - Downloads_Torrent:/media/Downloads/Torrent/
     ports:
       - 8081:8081
       - 40202:40202
@@ -99,7 +98,7 @@ services:
       - TZ=Etc/UTC
     volumes:
       - /opt/appdata/bazarr:/config
-      - Media_Data:/data
+      - Media:/media
     restart: unless-stopped
 
   prowlarr:
@@ -172,7 +171,7 @@ services:
       - backend
       - media
     volumes:
-      - Media_Data:/data
+      - Media:/media
       - /opt/appdata/unpackerr:/config
     restart: unless-stopped
     user: 1000:1000
@@ -193,7 +192,7 @@ services:
       # Sonarr Config
       - UN_SONARR_0_URL=http://sonarr:8989
       - UN_SONARR_0_API_KEY=21891cc95d304535bbc4541e669efb55
-      - UN_SONARR_0_PATHS_0=/data/Downloads/Torrent/tv-sonarr
+      - UN_SONARR_0_PATHS_0=/media/Downloads/Torrent/tv-sonarr
       - UN_SONARR_0_PROTOCOLS=torrent
       - UN_SONARR_0_TIMEOUT=10s
       - UN_SONARR_0_DELETE_ORIG=false
@@ -201,7 +200,7 @@ services:
       # Radarr Config
       - UN_RADARR_0_URL=http://radarr:7878
       - UN_RADARR_0_API_KEY=d32f79b5765146c3a63e535382799a95
-      - UN_RADARR_0_PATHS_0=/data/Downloads/Torrent/radarr
+      - UN_RADARR_0_PATHS_0=/media/Downloads/Torrent/radarr
       - UN_RADARR_0_PROTOCOLS=torrent
       - UN_RADARR_0_TIMEOUT=10s
       - UN_RADARR_0_DELETE_ORIG=false
@@ -216,28 +215,28 @@ volumes:
     driver_opts:
       type: nfs
       o:        addr=192.168.0.6,rw,nfsvers=4
-      device: :/mnt/user/data/Downloads/Torrent
+      device: :/mnt/sigma/Media/Downloads/Torrent
 
   Torrent_Watch:
     name: Torrent_Watch
     driver_opts:
       type: nfs
       o:        addr=192.168.0.6,rw,nfsvers=4
-      device: :/mnt/user/data/Downloads/Torrent/WATCH
+      device: :/mnt/sigma/Media/Downloads/Torrent/WATCH
       
   Media:
     name: Media
     driver_opts:
       type: nfs
       o:        addr=192.168.0.6,rw,nfsvers=4
-      device: :/mnt/user/data
+      device: :/mnt/sigma/Media
     
   Library:
     name: Library
     driver_opts:
       type: nfs
       o:        addr=192.168.0.6,rw,nfsvers=4
-      device: :/mnt/user/data/Media
+      device: :/mnt/sigma/Media/Library
 
 networks:
     media:
