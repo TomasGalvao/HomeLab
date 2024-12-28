@@ -39,36 +39,7 @@ services:
     volumes:
       - /opt/appdata/Nginx-Proxy-Manager/data:/data
       - /opt/appdata/Nginx-Proxy-Manager/letsencrypt:/etc/letsencrypt
-
-  syncthing:
-    image: lscr.io/linuxserver/syncthing:latest
-    container_name: syncthing
-    hostname: syncthing #optional
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Etc/UTC
-    volumes:
-      - /opt/appdata/syncthing/config:/config
-      - Syncthing:/data
-    networks: 
-      - frontend
-      - backend
-    ports:
-      - 8384:8384
-      - 22000:22000/tcp
-      - 22000:22000/udp
-      - 21027:21027/udp
-    restart: unless-stopped
-
-volumes:
-  Syncthing:
-    name: Syncthing
-    driver_opts:
-      type: nfs
-      o: 	addr=192.168.0.6,rw,nfsvers=4
-      device: :/mnt/user/syncthing
-    
+      
 networks:
     frontend:
       name: frontend
