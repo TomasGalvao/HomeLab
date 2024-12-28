@@ -14,7 +14,7 @@ services:
       - NVIDIA_VISIBLE_DEVICES=all
     volumes:
       - /opt/appdata/jellyfin:/config
-      - Media:/media
+      - Media/Library:/media
     ports:
       - 8096:8096
       - 8920:8920 #optional
@@ -80,7 +80,7 @@ services:
       - WEBUI_PORT=8081
     volumes:
       - /opt/appdata/qbittorrent:/config
-      - Downloads_Torrent:/media/Downloads/Torrent/
+      - Media/Downloads/Torrent:/media/Downloads/Torrent/
     ports:
       - 8081:8081
       - 40202:40202
