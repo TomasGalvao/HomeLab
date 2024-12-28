@@ -216,13 +216,6 @@ volumes:
       type: nfs
       o:        addr=192.168.0.6,rw,nfsvers=4
       device: :/mnt/sigma/Media/Downloads/Torrent
-
-  Torrent_Watch:
-    name: Torrent_Watch
-    driver_opts:
-      type: nfs
-      o:        addr=192.168.0.6,rw,nfsvers=4
-      device: :/mnt/sigma/Media/Downloads/Torrent/WATCH
       
   Media:
     name: Media
